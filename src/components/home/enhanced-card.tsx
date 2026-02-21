@@ -51,20 +51,30 @@ export const EnhancedCard = forwardRef<HTMLElement, EnhancedCardProps>(
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          borderRadius: 3,
+          borderRadius: 4,
           border: `1px solid ${alpha(theme.palette.divider, isDark ? 0.36 : 0.8)}`,
           backgroundColor: alpha(
             theme.palette.background.paper,
             isDark ? 0.58 : 0.8,
           ),
-          backdropFilter: "blur(14px) saturate(120%)",
+          backdropFilter: "blur(20px) saturate(130%)",
+          boxShadow: isDark
+            ? "0 18px 36px rgba(4, 10, 28, 0.32)"
+            : "0 18px 30px rgba(84, 104, 148, 0.15)",
+          transition: "transform 0.18s ease, box-shadow 0.18s ease",
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: isDark
+              ? "0 22px 38px rgba(4, 10, 28, 0.38)"
+              : "0 20px 34px rgba(84, 104, 148, 0.2)",
+          },
         }}
         ref={ref}
       >
         <Box
           sx={{
             px: 1.5,
-            py: 1,
+            py: 1.1,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",

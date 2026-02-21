@@ -63,10 +63,14 @@ export const LayoutItem = (props: Props) => {
         {...(dragHandleProps ?? {})}
         sx={[
           {
-            borderRadius: 999,
-            minHeight: 42,
-            px: 1.25,
-            gap: 0.75,
+            flexDirection: "column",
+            justifyContent: "center",
+            borderRadius: 16,
+            minHeight: 62,
+            minWidth: 72,
+            px: 1,
+            py: 0.6,
+            gap: 0.4,
             border: "1px solid",
             borderColor: "transparent",
             cursor: draggable ? "grab" : "pointer",
@@ -74,7 +78,8 @@ export const LayoutItem = (props: Props) => {
             "& .MuiListItemText-primary": {
               color: "text.primary",
               fontWeight: 600,
-              fontSize: 13,
+              fontSize: 11,
+              lineHeight: 1.1,
             },
           },
           ({ palette: { mode, primary } }) => {
@@ -86,17 +91,18 @@ export const LayoutItem = (props: Props) => {
             return {
               backgroundColor: alpha(
                 primary.main,
-                mode === "light" ? 0.03 : 0.08,
+                mode === "light" ? 0.04 : 0.1,
               ),
               "&:hover": {
                 backgroundColor: alpha(
                   primary.main,
-                  mode === "light" ? 0.08 : 0.16,
+                  mode === "light" ? 0.12 : 0.2,
                 ),
               },
               "&.Mui-selected": {
                 bgcolor,
-                borderColor: alpha(primary.main, 0.4),
+                borderColor: alpha(primary.main, 0.48),
+                transform: "translateY(-1px)",
               },
               "&.Mui-selected:hover": { bgcolor },
               "&.Mui-selected .MuiListItemText-primary": { color },
@@ -112,7 +118,7 @@ export const LayoutItem = (props: Props) => {
             sx={{
               color: "text.primary",
               minWidth: "auto",
-              margin: 0,
+              margin: "0 auto",
               cursor: draggable ? "grab" : "inherit",
             }}
           >
@@ -123,7 +129,7 @@ export const LayoutItem = (props: Props) => {
           <ListItemIcon
             sx={{
               minWidth: "auto",
-              margin: 0,
+              margin: "0 auto",
               cursor: draggable ? "grab" : "inherit",
             }}
           >
@@ -132,7 +138,7 @@ export const LayoutItem = (props: Props) => {
         )}
         <ListItemText
           sx={{
-            textAlign: "left",
+            textAlign: "center",
             m: 0,
           }}
           primary={children}

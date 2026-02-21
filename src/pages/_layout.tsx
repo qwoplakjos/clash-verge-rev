@@ -338,7 +338,7 @@ const Layout = () => {
               </div>
             </div>
 
-            <div className="layout-content__left">
+            <div className="layout-content__left layout-content__dock">
               <div className="the-logo" data-tauri-drag-region="false">
                 <div data-tauri-drag-region="true" className="the-logo__brand">
                   <SvgIcon
@@ -350,73 +350,75 @@ const Layout = () => {
                 <UpdateButton className="the-newbtn" />
               </div>
 
-              {menuUnlocked && (
-                <Box
-                  sx={(theme) => ({
-                    px: 1.5,
-                    py: 0.75,
-                    mx: "auto",
-                    mb: 0.5,
-                    borderRadius: 999,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    textAlign: "center",
-                    color: theme.palette.warning.contrastText,
-                    bgcolor:
-                      theme.palette.mode === "light"
-                        ? theme.palette.warning.main
-                        : theme.palette.warning.dark,
-                  })}
-                >
-                  {t("layout.components.navigation.menu.reorderMode")}
-                </Box>
-              )}
+              <div className="dock-menu-wrap">
+                {menuUnlocked && (
+                  <Box
+                    sx={(theme) => ({
+                      px: 1.5,
+                      py: 0.75,
+                      mx: "auto",
+                      mb: 0.5,
+                      borderRadius: 999,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      textAlign: "center",
+                      color: theme.palette.warning.contrastText,
+                      bgcolor:
+                        theme.palette.mode === "light"
+                          ? theme.palette.warning.main
+                          : theme.palette.warning.dark,
+                    })}
+                  >
+                    {t("layout.components.navigation.menu.reorderMode")}
+                  </Box>
+                )}
 
-              {menuUnlocked ? (
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleMenuDragEnd}
-                >
-                  <SortableContext items={menuOrder}>
-                    <List
-                      className="the-menu"
-                      onContextMenu={handleMenuContextMenu}
-                    >
-                      {menuOrder.map((path) => {
-                        const item = navItemMap.get(path);
-                        if (!item) return null;
-                        return (
-                          <SortableNavMenuItem
-                            key={item.path}
-                            item={item}
-                            label={t(item.label)}
-                          />
-                        );
-                      })}
-                    </List>
-                  </SortableContext>
-                </DndContext>
-              ) : (
-                <List
-                  className="the-menu"
-                  onContextMenu={handleMenuContextMenu}
-                >
-                  {menuOrder.map((path) => {
-                    const item = navItemMap.get(path);
-                    if (!item) return null;
-                    return (
-                      <LayoutItem
-                        key={item.path}
-                        to={item.path}
-                        icon={item.icon}
+                {menuUnlocked ? (
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleMenuDragEnd}
+                  >
+                    <SortableContext items={menuOrder}>
+                      <List
+                        className="the-menu"
+                        onContextMenu={handleMenuContextMenu}
                       >
-                        {t(item.label)}
-                      </LayoutItem>
-                    );
-                  })}
-                </List>
-              )}
+                        {menuOrder.map((path) => {
+                          const item = navItemMap.get(path);
+                          if (!item) return null;
+                          return (
+                            <SortableNavMenuItem
+                              key={item.path}
+                              item={item}
+                              label={t(item.label)}
+                            />
+                          );
+                        })}
+                      </List>
+                    </SortableContext>
+                  </DndContext>
+                ) : (
+                  <List
+                    className="the-menu"
+                    onContextMenu={handleMenuContextMenu}
+                  >
+                    {menuOrder.map((path) => {
+                      const item = navItemMap.get(path);
+                      if (!item) return null;
+                      return (
+                        <LayoutItem
+                          key={item.path}
+                          to={item.path}
+                          icon={item.icon}
+                        >
+                          {t(item.label)}
+                        </LayoutItem>
+                      );
+                    })}
+                  </List>
+                )}
+              </div>
 
               <Menu
                 open={Boolean(menuContextPosition)}

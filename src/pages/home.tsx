@@ -214,8 +214,8 @@ const HomePage = () => {
       network: true,
       mode: true,
       traffic: true,
-      clashinfo: true,
-      systeminfo: true,
+      clashinfo: false,
+      systeminfo: false,
       ip: true,
     }),
     [],
@@ -343,7 +343,7 @@ const HomePage = () => {
   return (
     <BasePage
       title={t("home.page.title")}
-      contentStyle={{ padding: 2 }}
+      contentStyle={{ padding: 1.5 }}
       header={
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Tooltip title={t("home.page.tooltips.lightweightMode")} arrow>
