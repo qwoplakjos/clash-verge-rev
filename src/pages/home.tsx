@@ -36,11 +36,6 @@ import { useProfiles } from "@/hooks/use-profiles";
 import { useVerge } from "@/hooks/use-verge";
 import { entry_lightweight_mode, openWebUrl } from "@/services/cmds";
 
-const LazyTestCard = lazy(() =>
-  import("@/components/home/test-card").then((module) => ({
-    default: module.TestCard,
-  })),
-);
 const LazyIpInfoCard = lazy(() =>
   import("@/components/home/ip-info-card").then((module) => ({
     default: module.IpInfoCard,
@@ -67,7 +62,6 @@ interface HomeCardsSettings {
   info: boolean;
   clashinfo: boolean;
   systeminfo: boolean;
-  test: boolean;
   ip: boolean;
   [key: string]: boolean;
 }
@@ -163,15 +157,6 @@ const HomeSettingsDialog = ({
           <FormControlLabel
             control={
               <Checkbox
-                checked={cards.test || false}
-                onChange={() => handleToggle("test")}
-              />
-            }
-            label={t("home.page.settings.cards.tests")}
-          />
-          <FormControlLabel
-            control={
-              <Checkbox
                 checked={cards.ip || false}
                 onChange={() => handleToggle("ip")}
               />
@@ -229,9 +214,8 @@ const HomePage = () => {
       network: true,
       mode: true,
       traffic: true,
-      clashinfo: true,
-      systeminfo: true,
-      test: true,
+      clashinfo: false,
+      systeminfo: false,
       ip: true,
     }),
     [],
@@ -332,12 +316,6 @@ const HomePage = () => {
         12,
       ),
       renderCard(
-        "test",
-        <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
-          <LazyTestCard />
-        </Suspense>,
-      ),
-      renderCard(
         "ip",
         <Suspense fallback={<Skeleton variant="rectangular" height={200} />}>
           <LazyIpInfoCard />
@@ -365,7 +343,7 @@ const HomePage = () => {
   return (
     <BasePage
       title={t("home.page.title")}
-      contentStyle={{ padding: 2 }}
+      contentStyle={{ padding: 1.5 }}
       header={
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Tooltip title={t("home.page.tooltips.lightweightMode")} arrow>

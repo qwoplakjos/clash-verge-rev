@@ -1,0 +1,69 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="ClashVergeLinux.Views.MainWindow"
+        Title="Clash Verge Linux (C# Native)"
+        Width="1180"
+        Height="760"
+        MinWidth="980"
+        MinHeight="640">
+  <Grid RowDefinitions="Auto,*,Auto" Margin="18" RowSpacing="14">
+    <Border Grid.Row="0" CornerRadius="14" Background="#1AFFFFFF" BorderBrush="#33FFFFFF" BorderThickness="1" Padding="14">
+      <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
+        <StackPanel>
+          <TextBlock Text="Clash Verge Linux C#" FontSize="22" FontWeight="Bold"/>
+          <TextBlock Text="{Binding Status}" Opacity="0.8"/>
+        </StackPanel>
+        <Button Grid.Column="1" Content="Refresh" Click="OnRefreshClick" />
+        <Button Grid.Column="2" Content="Save Config" Click="OnSaveConfigClick" />
+      </Grid>
+    </Border>
+
+    <TabControl Grid.Row="1">
+      <TabItem Header="Home">
+        <Border Padding="14" CornerRadius="12" Background="#16000000">
+          <StackPanel Spacing="8">
+            <TextBlock Text="Overview" FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock Text="Version:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Overview.Version}"/>
+            <TextBlock Text="Controller:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Overview.ExternalController}"/>
+            <TextBlock Text="Upload Total:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Overview.UploadTotal}"/>
+            <TextBlock Text="Download Total:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Overview.DownloadTotal}"/>
+          </StackPanel>
+        </Border>
+      </TabItem>
+
+      <TabItem Header="Proxies">
+        <Border Padding="14" CornerRadius="12" Background="#16000000">
+          <StackPanel>
+            <TextBlock Text="Proxy Groups" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            <ListBox ItemsSource="{Binding ProxyGroups}" Height="460"/>
+          </StackPanel>
+        </Border>
+      </TabItem>
+
+      <TabItem Header="Settings">
+        <Border Padding="14" CornerRadius="12" Background="#16000000">
+          <StackPanel Spacing="10">
+            <TextBlock Text="Linux-only native config" FontSize="18" FontWeight="SemiBold"/>
+            <TextBlock Text="Config file location is ~/.config style path under ApplicationData." Opacity="0.8"/>
+            <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10" RowDefinitions="Auto,Auto,Auto">
+              <TextBlock Text="Language:" Grid.Row="0"/>
+              <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Config.Language}"/>
+              <TextBlock Text="Mixed Port:" Grid.Row="1"/>
+              <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Config.VergeMixedPort}"/>
+              <TextBlock Text="Theme Mode:" Grid.Row="2"/>
+              <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Config.ThemeMode}"/>
+            </Grid>
+          </StackPanel>
+        </Border>
+      </TabItem>
+    </TabControl>
+
+    <Border Grid.Row="2" CornerRadius="12" Background="#14000000" Padding="10">
+      <TextBlock HorizontalAlignment="Center" Text="No Rust backend. Linux-only C# GUI skeleton using Avalonia + direct mihomo HTTP."/>
+    </Border>
+  </Grid>
+</Window>

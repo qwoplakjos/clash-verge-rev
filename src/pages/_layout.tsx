@@ -34,7 +34,6 @@ import iconLight from "@/assets/image/icon_light.svg?react";
 import LogoSvg from "@/assets/image/logo.svg?react";
 import { BaseErrorBoundary } from "@/components/base";
 import { LayoutItem } from "@/components/layout/layout-item";
-import { LayoutTraffic } from "@/components/layout/layout-traffic";
 import { NoticeManager } from "@/components/layout/notice-manager";
 import { UpdateButton } from "@/components/layout/update-button";
 import { WindowControls } from "@/components/layout/window-controller";
@@ -330,25 +329,20 @@ const Layout = () => {
           {customTitlebar}
 
           <div className="layout-content">
-            <div className="layout-content__left">
+            <div className="layout-content__right">
+              <div className="the-bar"></div>
+              <div className="the-content">
+                <BaseErrorBoundary>
+                  <Outlet />
+                </BaseErrorBoundary>
+              </div>
+            </div>
+
+            <div className="layout-content__left layout-content__dock">
               <div className="the-logo" data-tauri-drag-region="false">
-                <div
-                  data-tauri-drag-region="true"
-                  style={{
-                    height: "27px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
+                <div data-tauri-drag-region="true" className="the-logo__brand">
                   <SvgIcon
                     component={isDark ? iconDark : iconLight}
-                    style={{
-                      height: "36px",
-                      width: "36px",
-                      marginTop: "-3px",
-                      marginRight: "5px",
-                      marginLeft: "-3px",
-                    }}
                     inheritViewBox
                   />
                   <LogoSvg fill={isDark ? "white" : "black"} />
@@ -356,78 +350,75 @@ const Layout = () => {
                 <UpdateButton className="the-newbtn" />
               </div>
 
-              {menuUnlocked && (
-                <Box
-                  sx={(theme) => ({
-                    px: 1.5,
-                    py: 0.75,
-                    mx: "auto",
-                    mb: 1,
-                    maxWidth: 250,
-                    borderRadius: 1.5,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    textAlign: "center",
-                    color: theme.palette.warning.contrastText,
-                    bgcolor:
-                      theme.palette.mode === "light"
-                        ? theme.palette.warning.main
-                        : theme.palette.warning.dark,
-                  })}
-                >
-                  {t("layout.components.navigation.menu.reorderMode")}
-                </Box>
-              )}
+              <div className="dock-menu-wrap">
+                {menuUnlocked && (
+                  <Box
+                    sx={(theme) => ({
+                      px: 1.5,
+                      py: 0.75,
+                      mx: "auto",
+                      mb: 0.5,
+                      borderRadius: 999,
+                      fontSize: 12,
+                      fontWeight: 600,
+                      textAlign: "center",
+                      color: theme.palette.warning.contrastText,
+                      bgcolor:
+                        theme.palette.mode === "light"
+                          ? theme.palette.warning.main
+                          : theme.palette.warning.dark,
+                    })}
+                  >
+                    {t("layout.components.navigation.menu.reorderMode")}
+                  </Box>
+                )}
 
-              {menuUnlocked ? (
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleMenuDragEnd}
-                >
-                  <SortableContext items={menuOrder}>
-                    <List
-                      className="the-menu"
-                      onContextMenu={handleMenuContextMenu}
-                    >
-                      {menuOrder.map((path) => {
-                        const item = navItemMap.get(path);
-                        if (!item) {
-                          return null;
-                        }
-                        return (
-                          <SortableNavMenuItem
-                            key={item.path}
-                            item={item}
-                            label={t(item.label)}
-                          />
-                        );
-                      })}
-                    </List>
-                  </SortableContext>
-                </DndContext>
-              ) : (
-                <List
-                  className="the-menu"
-                  onContextMenu={handleMenuContextMenu}
-                >
-                  {menuOrder.map((path) => {
-                    const item = navItemMap.get(path);
-                    if (!item) {
-                      return null;
-                    }
-                    return (
-                      <LayoutItem
-                        key={item.path}
-                        to={item.path}
-                        icon={item.icon}
+                {menuUnlocked ? (
+                  <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleMenuDragEnd}
+                  >
+                    <SortableContext items={menuOrder}>
+                      <List
+                        className="the-menu"
+                        onContextMenu={handleMenuContextMenu}
                       >
-                        {t(item.label)}
-                      </LayoutItem>
-                    );
-                  })}
-                </List>
-              )}
+                        {menuOrder.map((path) => {
+                          const item = navItemMap.get(path);
+                          if (!item) return null;
+                          return (
+                            <SortableNavMenuItem
+                              key={item.path}
+                              item={item}
+                              label={t(item.label)}
+                            />
+                          );
+                        })}
+                      </List>
+                    </SortableContext>
+                  </DndContext>
+                ) : (
+                  <List
+                    className="the-menu"
+                    onContextMenu={handleMenuContextMenu}
+                  >
+                    {menuOrder.map((path) => {
+                      const item = navItemMap.get(path);
+                      if (!item) return null;
+                      return (
+                        <LayoutItem
+                          key={item.path}
+                          to={item.path}
+                          icon={item.icon}
+                        >
+                          {t(item.label)}
+                        </LayoutItem>
+                      );
+                    })}
+                  </List>
+                )}
+              </div>
 
               <Menu
                 open={Boolean(menuContextPosition)}
@@ -442,11 +433,7 @@ const Layout = () => {
                     : undefined
                 }
                 transitionDuration={200}
-                slotProps={{
-                  list: {
-                    sx: { py: 0.5 },
-                  },
-                }}
+                slotProps={{ list: { sx: { py: 0.5 } } }}
               >
                 <MenuItem onClick={handleToggleNavCollapsed} dense>
                   {navCollapsed
@@ -469,19 +456,6 @@ const Layout = () => {
                   {t("layout.components.navigation.menu.restoreDefaultOrder")}
                 </MenuItem>
               </Menu>
-
-              <div className="the-traffic">
-                <LayoutTraffic />
-              </div>
-            </div>
-
-            <div className="layout-content__right">
-              <div className="the-bar"></div>
-              <div className="the-content">
-                <BaseErrorBoundary>
-                  <Outlet />
-                </BaseErrorBoundary>
-              </div>
             </div>
           </div>
         </Paper>

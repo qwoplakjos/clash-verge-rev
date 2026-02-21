@@ -54,7 +54,7 @@ export const LayoutItem = (props: Props) => {
       ref={setNodeRef}
       style={style}
       sx={[
-        { py: 0.5, maxWidth: 250, mx: "auto", padding: "4px 0px" },
+        { py: 0, px: 0, width: "auto", maxWidth: "none", mx: 0 },
         isDragging ? { opacity: 0.78 } : {},
       ]}
     >
@@ -63,16 +63,23 @@ export const LayoutItem = (props: Props) => {
         {...(dragHandleProps ?? {})}
         sx={[
           {
-            borderRadius: 2,
-            marginLeft: 1.25,
-            paddingLeft: 1,
-            paddingRight: 1,
-            marginRight: 1.25,
+            flexDirection: "column",
+            justifyContent: "center",
+            borderRadius: 16,
+            minHeight: 62,
+            minWidth: 72,
+            px: 1,
+            py: 0.6,
+            gap: 0.4,
+            border: "1px solid",
+            borderColor: "transparent",
             cursor: draggable ? "grab" : "pointer",
             "&:active": draggable ? { cursor: "grabbing" } : {},
             "& .MuiListItemText-primary": {
               color: "text.primary",
-              fontWeight: "700",
+              fontWeight: 600,
+              fontSize: 11,
+              lineHeight: 1.1,
             },
           },
           ({ palette: { mode, primary } }) => {
@@ -82,7 +89,21 @@ export const LayoutItem = (props: Props) => {
                 : alpha(primary.main, 0.35);
             const color = mode === "light" ? "#1f1f1f" : "#ffffff";
             return {
-              "&.Mui-selected": { bgcolor },
+              backgroundColor: alpha(
+                primary.main,
+                mode === "light" ? 0.04 : 0.1,
+              ),
+              "&:hover": {
+                backgroundColor: alpha(
+                  primary.main,
+                  mode === "light" ? 0.12 : 0.2,
+                ),
+              },
+              "&.Mui-selected": {
+                bgcolor,
+                borderColor: alpha(primary.main, 0.48),
+                transform: "translateY(-1px)",
+              },
               "&.Mui-selected:hover": { bgcolor },
               "&.Mui-selected .MuiListItemText-primary": { color },
             };
@@ -96,7 +117,8 @@ export const LayoutItem = (props: Props) => {
           <ListItemIcon
             sx={{
               color: "text.primary",
-              marginLeft: "6px",
+              minWidth: "auto",
+              margin: "0 auto",
               cursor: draggable ? "grab" : "inherit",
             }}
           >
@@ -104,14 +126,20 @@ export const LayoutItem = (props: Props) => {
           </ListItemIcon>
         )}
         {effectiveMenuIcon === "colorful" && (
-          <ListItemIcon sx={{ cursor: draggable ? "grab" : "inherit" }}>
+          <ListItemIcon
+            sx={{
+              minWidth: "auto",
+              margin: "0 auto",
+              cursor: draggable ? "grab" : "inherit",
+            }}
+          >
             {icon[1]}
           </ListItemIcon>
         )}
         <ListItemText
           sx={{
             textAlign: "center",
-            marginLeft: effectiveMenuIcon === "disable" ? "" : "-35px",
+            m: 0,
           }}
           primary={children}
         />

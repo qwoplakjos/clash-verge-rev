@@ -51,20 +51,34 @@ export const EnhancedCard = forwardRef<HTMLElement, EnhancedCardProps>(
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          borderRadius: 2,
-          backgroundColor: isDark ? "#282a36" : "#ffffff",
+          borderRadius: 4,
+          border: `1px solid ${alpha(theme.palette.divider, isDark ? 0.36 : 0.8)}`,
+          backgroundColor: alpha(
+            theme.palette.background.paper,
+            isDark ? 0.58 : 0.8,
+          ),
+          backdropFilter: "blur(20px) saturate(130%)",
+          boxShadow: isDark
+            ? "0 18px 36px rgba(4, 10, 28, 0.32)"
+            : "0 18px 30px rgba(84, 104, 148, 0.15)",
+          transition: "transform 0.18s ease, box-shadow 0.18s ease",
+          "&:hover": {
+            transform: "translateY(-2px)",
+            boxShadow: isDark
+              ? "0 22px 38px rgba(4, 10, 28, 0.38)"
+              : "0 20px 34px rgba(84, 104, 148, 0.2)",
+          },
         }}
         ref={ref}
       >
         <Box
           sx={{
-            px: 2,
-            py: 1,
+            px: 1.5,
+            py: 1.1,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            borderBottom: 1,
-            borderColor: "divider",
+            borderBottom: `1px solid ${alpha(theme.palette.divider, 0.6)}`,
           }}
         >
           <Box
@@ -81,10 +95,10 @@ export const EnhancedCard = forwardRef<HTMLElement, EnhancedCardProps>(
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: 1.5,
-                width: 38,
-                height: 38,
-                mr: 1.5,
+                borderRadius: 2,
+                width: 34,
+                height: 34,
+                mr: 1.25,
                 flexShrink: 0,
                 backgroundColor: alpha(theme.palette[iconColor].main, 0.12),
                 color: theme.palette[iconColor].main,
@@ -96,8 +110,8 @@ export const EnhancedCard = forwardRef<HTMLElement, EnhancedCardProps>(
               {typeof title === "string" ? (
                 <Typography
                   variant="h6"
-                  fontWeight="medium"
-                  fontSize={18}
+                  fontWeight={600}
+                  fontSize={16}
                   sx={titleTruncateStyle}
                   title={title}
                 >
